@@ -1,14 +1,19 @@
-# Use an official Nginx image
+# Use Nginx to serve static files
 FROM nginx:alpine
 
-# Copy our custom Nginx config
-COPY docker/default.conf /etc/nginx/conf.d/default.conf
+# Set working directory
+WORKDIR /usr/share/nginx/html
 
-# Copy static files to Nginx HTML directory
-COPY src /usr/share/nginx/html
+# Remove default Nginx static files
+RUN rm -rf ./*
 
-# Expose port 80
+# Copy project files to the container
+COPY index.html index.html
+COPY script.js script.js
+
+# Expose the default Nginx port
 EXPOSE 80
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
